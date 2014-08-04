@@ -12,3 +12,4 @@ Installations:
 * libmoose-perl
 * libmoosex-method-signatures-perl
 * libyaml-perl
+* libtemplate-perl
