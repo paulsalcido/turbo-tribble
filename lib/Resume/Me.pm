@@ -3,6 +3,8 @@ package Resume::Me;
 use Moose;
 use MooseX::Method::Signatures;
 
+use Resume::Me::Location;
+
 use namespace::autoclean;
 
 has 'name' => (
@@ -25,8 +27,9 @@ has 'phone' => (
 
 has 'location' => (
     is => 'ro',
-    isa => 'HashRef',
+    isa => 'Resume::Me::Location',
     required => 1,
+    coerce => 1,
 );
 
 1;
