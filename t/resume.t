@@ -10,6 +10,6 @@ isa_ok($t, 'Resume');
 is($t->template_file(template => 'main'), 'template/main/body.tt');
 
 use Data::Dumper;
-diag Dumper([ $t->write_tex_files(templates => [qw/main default/]) ]);
+diag Dumper([ $t->write_pdf_files(templates => [qw/main default/]) ]);
 
 done_testing;

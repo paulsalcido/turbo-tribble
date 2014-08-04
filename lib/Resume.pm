@@ -3,6 +3,7 @@ package Resume;
 use Moose;
 use MooseX::Method::Signatures;
 use File::Spec;
+use File::Path;
 use YAML;
 
 use Resume::Me;
@@ -30,6 +31,12 @@ has 'template' => (
     lazy => 1,
 );
 
+has 'latex_command' => (
+    is => 'ro',
+    isa => 'Str',
+    default => 'pdftex',
+);
+
 method _build_me() {
     return Resume::Me->new(YAML::LoadFile($self->me_file));
 }
@@ -51,19 +58,37 @@ method _build_template() {
 }
 
 method write_tex_files(:$templates!) {
-    return map {
-        $self->write_tex_file(template => $_);
-    } @$templates;
+    $self->write_tex_file(template => $_) foreach @$templates;
+}
+
+method write_pdf_files(ArrayRef :$templates!) {
+    $self->write_pdf_file(template => $_) foreach @$templates;
 }
 
 method write_tex_file(Str :$template!) {
-    my $data = '';
-    $self->template->process($self->template_file(template => $template), { resume => $self }, \$data) || die $self->template->error;
-    return $data;
+    $self->template->process($self->template_file(template => $template), { resume => $self }, $self->output_tex_file(template => $template)) || die $self->template->error;
+}
+
+method write_pdf_file(Str :$template!) {
+    $self->write_tex_file(template => $template);
+    File::Path::mkpath($self->output_pdf_dir(template => $template));
+    system($self->latex_command, 
+        "--output-directory",
+        $self->output_pdf_dir(template => $template),
+        $self->output_tex_file(template => $template),
+    );
 }
 
 method template_file(Str :$template!) {
     return File::Spec->catfile($self->template_root, $template, 'body.tt');
+}
+
+method output_tex_file(Str :$template!) {
+    return File::Spec->catfile('output', 'tex', $template . '.tex');
+}
+
+method output_pdf_dir(Str :$template!) {
+    return File::Spec->catfile('output', 'pdf', $template);
 }
 
 1;
