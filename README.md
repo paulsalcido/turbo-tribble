@@ -13,3 +13,12 @@ Installations:
 * libmoosex-method-signatures-perl
 * libyaml-perl
 * libtemplate-perl
+
+TODO
+====
+
+Introduce text formatting for characters:
+
+```
+\# \$ \% \^{} \& \_ \{ \} \~{} \textbackslash{}
+```

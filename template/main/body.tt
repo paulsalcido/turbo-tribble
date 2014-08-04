@@ -1,1 +1,6 @@
-\empty Hello [% resume.me.name %]!\bye
+\documentclass{article}
+
+\begin{document}
+Hello [% resume.me.name %]!
+\textbackslash{}
+\end{document}

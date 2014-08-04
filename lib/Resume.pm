@@ -34,7 +34,7 @@ has 'template' => (
 has 'latex_command' => (
     is => 'ro',
     isa => 'Str',
-    default => 'pdftex',
+    default => 'pdflatex',
 );
 
 method _build_me() {
